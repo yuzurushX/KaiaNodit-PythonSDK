@@ -5,7 +5,8 @@ A Python SDK for interacting with the Nodit API to access Kaia Chain blockchain 
 ## Installation 
 
 ```bash
-pip install KaiaNoditSDK
+python setup.py sdist bdist_wheel
+pip install dist/KaiaNoditSDK-0.1.0-py3-none-any.whl
 ```
 
 ## Usage
