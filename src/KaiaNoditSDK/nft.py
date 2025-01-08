@@ -2,14 +2,16 @@ from typing import Optional, List, Dict, Any
 from .client import Client
 
 class NFT:
-    def __init__(self, api_key):
+    def __init__(self, api_key, network="mainnet"):
         self.client = Client(api_key)
+        self.network = network
+        self.base_path = f"/v1/kaia/{network if network == 'mainnet' else 'kairos'}"
 
     def get_nft_contract_metadata_by_contracts(
         self, 
         contract_addresses: List[str]
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftContractMetadataByContracts"
+        endpoint = f"{self.base_path}/nft/getNftContractMetadataByContracts"
         payload = {"contractAddresses": contract_addresses}
         return self.client.post(endpoint, payload)
 
@@ -22,7 +24,7 @@ class NFT:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftContractsByAccount"
+        endpoint = f"{self.base_path}/nft/getNftContractsByAccount"
         payload = {"accountAddress": account_address}
         
         if contract_addresses is not None:
@@ -46,7 +48,7 @@ class NFT:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftHoldersByContract"
+        endpoint = f"{self.base_path}/nft/getNftHoldersByContract"
         payload = {"contractAddress": contract_address}
         
         if page is not None:
@@ -69,7 +71,7 @@ class NFT:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftHoldersByTokenId"
+        endpoint = f"{self.base_path}/nft/getNftHoldersByTokenId"
         payload = {
             "contractAddress": contract_address,
             "tokenId": token_id
@@ -94,7 +96,7 @@ class NFT:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftMetadataByContract"
+        endpoint = f"{self.base_path}/nft/getNftMetadataByContract"
         payload = {"contractAddress": contract_address}
         
         if page is not None:
@@ -112,7 +114,7 @@ class NFT:
         self, 
         tokens: List[Dict[str, str]]
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftMetadataByTokenIds"
+        endpoint = f"{self.base_path}/nft/getNftMetadataByTokenIds"
         payload = {"tokens": tokens}
         return self.client.post(endpoint, payload)
 
@@ -132,7 +134,7 @@ class NFT:
         with_metadata: Optional[bool] = None,
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = f"/v1/kaia/mainnet/nft/getNftTransfersByAccount"
+        endpoint = f"{self.base_path}/nft/getNftTransfersByAccount"
         payload = {"accountAddress": account_address}
         
         if relation is not None:
@@ -176,7 +178,7 @@ class NFT:
         with_metadata: Optional[bool] = None, 
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftTransfersByContract"
+        endpoint = f"{self.base_path}/nft/getNftTransfersByContract"
         payload = {"contractAddress": contract_address}
         
         if from_block is not None:
@@ -217,7 +219,7 @@ class NFT:
         with_metadata: Optional[bool] = None, 
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftTransfersByTokenId"
+        endpoint = f"{self.base_path}/nft/getNftTransfersByTokenId"
         payload = {
             "contractAddress": contract_address,
             "tokenId": token_id
@@ -259,7 +261,7 @@ class NFT:
         with_metadata: Optional[bool] = None, 
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftTransfersWithinRange"
+        endpoint = f"{self.base_path}/nft/getNftTransfersWithinRange"
         payload = {}
         
         if from_block is not None:
@@ -295,7 +297,7 @@ class NFT:
         with_count: Optional[bool] = None, 
         with_metadata: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/getNftsOwnedByAccount"
+        endpoint = f"{self.base_path}/nft/getNftsOwnedByAccount"
         payload = {"accountAddress": account_address}
         
         if contract_addresses is not None:
@@ -321,7 +323,7 @@ class NFT:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/nft/searchNftContractMetadataByKeyword"
+        endpoint = f"{self.base_path}/nft/searchNftContractMetadataByKeyword"
         payload = {"keyword": keyword}
         
         if page is not None:

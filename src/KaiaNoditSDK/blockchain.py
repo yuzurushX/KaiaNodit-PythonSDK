@@ -2,14 +2,16 @@ from typing import Optional, List, Dict, Any
 from .client import Client
 
 class Blockchain:
-    def __init__(self, api_key):
+    def __init__(self, api_key, network="mainnet"):
         self.client = Client(api_key)
+        self.network = network
+        self.base_path = f"/v1/kaia/{network if network == 'mainnet' else 'kairos'}"
 
     def get_block_by_hash_or_number(
         self,
         block: str
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/blockchain/getBlockByHashOrNumber"
+        endpoint = f"{self.base_path}/blockchain/getBlockByHashOrNumber"
         payload = {"block": block}
         return self.client.post(endpoint, payload)
 
@@ -24,7 +26,7 @@ class Blockchain:
         cursor: Optional[str] = None,
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/blockchain/getBlocksWithinRange"
+        endpoint = f"{self.base_path}/blockchain/getBlocksWithinRange"
         payload = {}
         
         if from_block is not None:
@@ -47,7 +49,7 @@ class Blockchain:
         return self.client.post(endpoint, payload)
 
     def get_gas_price(self) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/blockchain/getGasPrice"
+        endpoint = f"{self.base_path}/blockchain/getGasPrice"
         payload = {}
         return self.client.post(endpoint, payload)
     

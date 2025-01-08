@@ -2,14 +2,16 @@ from typing import Optional, List, Dict, Any
 from .client import Client
 
 class Token:
-    def __init__(self, api_key):
+    def __init__(self, api_key, network="mainnet"):
         self.client = Client(api_key)
+        self.network = network
+        self.base_path = f"/v1/kaia/{network if network == 'mainnet' else 'kairos'}"
 
     def get_native_balance_by_account(
         self, 
         account_address: str
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/native/getNativeBalanceByAccount"
+        endpoint = f"{self.base_path}/native/getNativeBalanceByAccount"
         payload = {"accountAddress": account_address}
         return self.client.post(endpoint, payload)
 
@@ -18,7 +20,7 @@ class Token:
         contract_addresses: List[str],
         currency: Optional[str] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenPricesByContracts"
+        endpoint = f"{self.base_path}/token/getTokenPricesByContracts"
         payload = {"contractAddresses": contract_addresses}
         
         if currency is not None:
@@ -40,7 +42,7 @@ class Token:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenTransfersByAccount"
+        endpoint = f"{self.base_path}/token/getTokenTransfersByAccount"
         payload = {"accountAddress": account_address}
         
         if relation is not None:
@@ -72,7 +74,7 @@ class Token:
         owner_address: str, 
         spender_address: str
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenAllowance"
+        endpoint = f"{self.base_path}/token/getTokenAllowance"
         payload = {
             "contractAddress": contract_address,
             "ownerAddress": owner_address,
@@ -84,7 +86,7 @@ class Token:
         self, 
         contract_addresses: List[str]
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenContractMetadataByContracts"
+        endpoint = f"{self.base_path}/token/getTokenContractMetadataByContracts"
         payload = {"contractAddresses": contract_addresses}
         return self.client.post(endpoint, payload)
 
@@ -96,7 +98,7 @@ class Token:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenHoldersByContract"
+        endpoint = f"{self.base_path}/token/getTokenHoldersByContract"
         payload = {"contractAddress": contract_address}
         
         if page is not None:
@@ -123,7 +125,7 @@ class Token:
         with_count: Optional[bool] = None, 
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenTransfersByContract"
+        endpoint = f"{self.base_path}/token/getTokenTransfersByContract"
         payload = {"contractAddress": contract_address}
         
         if from_block is not None:
@@ -160,7 +162,7 @@ class Token:
         with_metadata: Optional[bool] = None, 
         with_zero_value: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokenTransfersWithinRange"
+        endpoint = f"{self.base_path}/token/getTokenTransfersWithinRange"
         payload = {}
         
         if from_block is not None:
@@ -195,7 +197,7 @@ class Token:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/getTokensOwnedByAccount"
+        endpoint = f"{self.base_path}/token/getTokensOwnedByAccount"
         payload = {"accountAddress": account_address}
         
         if contract_address is not None:
@@ -219,7 +221,7 @@ class Token:
         cursor: Optional[str] = None, 
         with_count: Optional[bool] = None
     ) -> Dict[str, Any]:
-        endpoint = "/v1/kaia/mainnet/token/searchTokenContractMetadataByKeyword"
+        endpoint = f"{self.base_path}/token/searchTokenContractMetadataByKeyword"
         payload = {"keyword": keyword}
         
         if page is not None:
